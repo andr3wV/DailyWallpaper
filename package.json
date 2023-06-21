@@ -2,7 +2,7 @@
   "name": "daily-wallpaper",
   "version": "1.0.0",
   "description": "Generates a daily psuedo-random beautiful desktop wallpaper on MacOS.",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
