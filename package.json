@@ -1,0 +1,29 @@
+{
+  "name": "daily-wallpaper",
+  "version": "1.0.0",
+  "description": "Generates a daily psuedo-random beautiful desktop wallpaper on MacOS.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andr3wV/daily-wallpaper.git"
+  },
+  "author": "Andrew Vittiglio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andr3wV/daily-wallpaper/issues"
+  },
+  "homepage": "https://github.com/andr3wV/daily-wallpaper#readme",
+  "devDependencies": {
+    "electron": "^25.1.1"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "fs": "^0.0.1-security",
+    "openai": "^3.3.0"
+  }
+}
