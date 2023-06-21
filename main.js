@@ -60,27 +60,33 @@ ipcMain.on("generateText", async (event) => {
         console.log(completion_text);
         event.reply("textGenerated", completion_text); // Send reply with generated text
     
-        /*---------Unsplash API----------*/
+        /*---------Get Image from Unsplash API----------*/
         const response = await axios.get('https://api.unsplash.com/photos/random?orientation=landscape&query=4K ' + completion_text + '&client_id=' + process.env.UNSPLASH_API_KEY + '&count=1')
         
-        /*---------Download Image----------*/
+        /*---------Download Image Response URL----------*/
         const responseImage = await axios.get(response.data[0].links.download, { responseType: "stream"});
         const file = fs.createWriteStream('./image/image.jpg');
         responseImage.data.pipe(file);
         file.on('error', (err) => {
-            fs.unlink('./downloads/image.jpg', () => {
+            fs.unlink('./downloads/image', () => {
                 console.error('Error downloading image:', err);
             });
         });
-        
         console.log("Image downloaded to ./image/image.jpg!!");
+
+        /*---------Set Image as Wallpaper----------*/
+        (async () => {
+            const wallpaper = await import('wallpaper');
+            await wallpaper.setWallpaper('./image/image.jpg').then(() => {
+              console.log("Image set as wallpaper!!");
+            });
+          })();
+
     } catch (error) {
         console.log(`API Request Error: ${error.message}`);
         event.reply("textGeneratedError", error.message); // Send reply with error message
     }
   });
-
-
 
 app.whenReady().then(() => {
     if(process.platform === 'darwin') {
