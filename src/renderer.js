@@ -15,14 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.myAPI.generateText(); // Use myAPI object to send request
   });
 
-  window.myAPI.onTextGenerated((completionText) => {
-    console.log("Received generated text:", completionText);
-  });
-
-  window.myAPI.onTextGeneratedError((errorMessage) => {
-    console.log("API Request Error:", errorMessage);
-  });
-
   window.myAPI.unsplashApiRequestSuccess((responseData) => {
     console.log("Unsplash API success:", responseData);
   });
@@ -66,6 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.myAPI.onTilesChangedError((errorMessage) => {
     console.log("API Request Error:", errorMessage);
+  });
+
+  window.myAPI.onVariablesResponse((data) => {
+    updateVariables(data);
+    document.querySelector("#mainImg").src = "../app/assets/image.jpg?timestamp=" + new Date().getTime();
   });
 
 });

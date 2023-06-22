@@ -24,6 +24,7 @@
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
     "fs": "^0.0.1-security",
+    "node-schedule": "^2.1.1",
     "openai": "^3.3.0",
     "wallpaper": "^6.1.1"
   }

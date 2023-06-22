@@ -5,16 +5,6 @@ contextBridge.exposeInMainWorld('myAPI', {
       generateText: () => {
           ipcRenderer.send("generateText");
       },
-      onTextGenerated: (callback) => {
-          ipcRenderer.on("textGenerated", (_, completionText) => {
-              callback(completionText);
-          });
-      },
-      onTextGeneratedError: (callback) => {
-          ipcRenderer.on("textGeneratedError", (_, errorMessage) => {
-              callback(errorMessage);
-          });
-      },
 
       /* Unsplash req and error */
       unsplashApiRequestSuccess: (callback) => {
