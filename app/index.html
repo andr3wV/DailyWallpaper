@@ -12,10 +12,114 @@
       content="default-src 'self'; script-src 'self'"
     />
     <title>Daily Wallpaper</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <p id = "info"></p>
-    <button id="chatButton">Unsplash</button>
+
+    <!-- Current Image -->
+    <div class="grid-block">
+      <div class="tile">
+        <a class="tile-link" href="#">
+          <img class="tile-img-main tile-img1" src="./assets/image.jpg" alt="Image">
+        </a>
+      </div>
+    </div>
+    <!-- Buttons -->
+    <div class = 'buttons-div'>
+      <button id= "chatButton" class="button-16">Change Desktop Wallpaper</button>
+    </div>
+
+    <div class = 'buttons-div'>
+      <button id= "" class="button-16">Change Tile Wallpapers</button>
+    </div>
+
+    <!-- Gallery Container -->   
+    <div class="grid image-grid">
+
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img1" src="./assets/gallery/image1.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img2" src="./assets/gallery/image2.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img3" src="./assets/gallery/image3.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img4" src="./assets/gallery/image4.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img5" src="./assets/gallery/image5.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img6" src="./assets/gallery/image6.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img7" src="./assets/gallery/image7.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img8" src="./assets/gallery/image8.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img9" src="./assets/gallery/image9.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+      
+      <div class="grid-block">
+        <div class="tile">
+          <a class="tile-link" href="#">
+            <img class="tile-img tile-img10" src="./assets/gallery/image10.jpg" alt="Image">
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+
   </body>
   <script src="../src/renderer.js"></script>
+  <script src="./gallery.js"></script>
 </html>
