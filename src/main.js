@@ -96,7 +96,7 @@ ipcMain.on("generateText", async (event) => {
     })
     .on('finish', () => {
         const variables = { name, username, instagram, description, location };
-        fs.writeFileSync(path.join(__dirname, '../app/assets/data.json'), JSON.stringify(variables));
+        fs.writeFileSync(path.join(__dirname, '../app/data.json'), JSON.stringify(variables));
         event.reply("variablesResponse", variables);
     });
 
@@ -118,7 +118,7 @@ ipcMain.on("generateText", async (event) => {
 });
 
 ipcMain.on("requestVariables", async (event) => {
-    const variablesFilePath = path.join(__dirname, '../app/assets/data.json');
+    const variablesFilePath = path.join(__dirname, '../app/data.json');
     if (fs.existsSync(variablesFilePath)) {
       const variables = JSON.parse(fs.readFileSync(variablesFilePath));
       event.reply("variablesResponse", variables);
@@ -132,10 +132,6 @@ ipcMain.on("requestVariables", async (event) => {
         location: "",
       });
     }
-});
-
-ipcMain.on("changeTiles", async (event) => {
-
 });
 
 app
