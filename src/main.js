@@ -54,10 +54,10 @@ ipcMain.on("generateText", async (event) => {
         {
           role: "user",
           content:
-            "Create a short search prompt for Unplash to find a beautiful picture.",
+            "Create a one word search prompt for Unplash to find an aesthetic picture.",
         },
       ],
-      temperature: 1,
+      temperature: 2,
       max_tokens: 50,
       top_p: 1,
     });
@@ -67,22 +67,16 @@ ipcMain.on("generateText", async (event) => {
     event.reply("textGenerated", completion_text); // Send reply with generated text
 
     /*---------Get Image from Unsplash API----------*/
-    const response = await axios.get(
-      "https://api.unsplash.com/photos/random?orientation=landscape&query=" +
-        completion_text +
-        "&client_id=" +
-        process.env.UNSPLASH_API_KEY +
-        "&count=3"
-    );
+    const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=" + completion_text + "&client_id=" + process.env.UNSPLASH_API_KEY );
     //console.log(response.data[0]);
 
     /*---------Download Image Response URL----------*/
-    const name = response.data[0].user.name;
-    const username = `@${response.data[0].user.username}`;
-    const instagram = `@${response.data[0].user.instagram_username}`;
-    const description = response.data[0].description;
-    const location = response.data[0].location.name;
-    const imageURL = response.data[0].links.download;
+    const name = response.data.user.name;
+    const username = `@${response.data.user.username}`;
+    const instagram = `@${response.data.user.instagram_username}`;
+    const description = response.data.description;
+    const location = response.data.location.name;
+    const imageURL = response.data.links.download;
 
     const responseImage = await axios.get(imageURL, { responseType: "stream" });
     const file = fs.createWriteStream(
