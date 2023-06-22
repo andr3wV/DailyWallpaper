@@ -74,7 +74,7 @@ ipcMain.on("generateText", async (event) => {
         process.env.UNSPLASH_API_KEY +
         "&count=3"
     );
-    console.log(response.data[0]);
+    //console.log(response.data[0]);
 
     /*---------Download Image Response URL----------*/
     const name = response.data[0].user.name;
@@ -133,6 +133,42 @@ ipcMain.on("requestVariables", async (event) => {
       });
     }
 });
+ipcMain.on("changeTiles", async (event) => {
+    try {
+      const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=beautiful&client_id=" + process.env.UNSPLASH_API_KEY +"&count=10");
+      
+      const downloadPromises = response.data.map(async (item, i) => {
+        const imageURL = item.links.download;
+        const responseImage = await axios.get(imageURL, { responseType: "stream" });
+        const file = fs.createWriteStream(
+          path.join(__dirname, `../app/assets/gallery/image${i}.jpg`)
+        );
+        
+        return new Promise((resolve, reject) => {
+          responseImage.data.pipe(file);
+          file.on('error', (err) => {
+            fs.unlink(path.join(__dirname, `../app/assets/gallery/image${i}.jpg`), () => {
+              console.error('Error downloading image:', err);
+            });
+            reject(err);
+          });
+          file.on('finish', () => {
+            console.log(`Image${i} downloaded`);
+            resolve();
+          });
+        });
+      });
+  
+      // Wait for all the download promises to resolve
+      await Promise.all(downloadPromises);
+  
+      event.reply("tilesChanged", "Tiles Changed");
+  
+    } catch (error) {
+      console.error("Error in changeTiles event:", error);
+      event.reply("tilesChangedError", error.message);
+    }
+  });
 
 app
   .whenReady()
