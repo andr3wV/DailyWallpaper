@@ -32,6 +32,11 @@ html {
     flex-direction: row;
     flex-wrap: wrap;
   }
+
+  .main-container {
+    display: flex;
+    justify-content: space-between;
+  }
   
   .grid-block {
     width: 50%;
@@ -88,6 +93,11 @@ html {
     -webkit-transition-timing-function: ease-in;
     transition-timing-function: ease-in;
   }
+  
+  #mainImg {
+    object-fit: contain;
+  
+  }
 
   .tile-img-main {
     border-radius: 24px;
@@ -104,6 +114,11 @@ html {
     pointer-events: none;
   }
 
+  .tile-link:hover .tile-img1 {
+    box-shadow: 5px 5px rgba(244, 170, 200, 0.4),
+      10px 10px rgba(244, 170, 200, 0.3), 15px 15px rgba(244, 170, 200, 0.2),
+      20px 20px rgba(244, 170, 200, 0.1), 25px 25px rgba(244, 170, 200, 0.05);
+  }
   .tile-link:hover .tile-img2 {
     box-shadow: 5px 5px rgba(45, 186, 233, 0.4), 10px 10px rgba(45, 186, 233, 0.3),
       15px 15px rgba(45, 186, 233, 0.2), 20px 20px rgba(45, 186, 233, 0.1),
@@ -180,7 +195,7 @@ html {
   display: inline-flex;
   fill: currentcolor;
   font-family: "Google Sans",Roboto,Arial,sans-serif;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 500;
   height: 48px;
   justify-content: center;
@@ -205,4 +220,21 @@ html {
 .button-17:hover {
   background: #F6F9FE;
   color: #174ea6;
+}
+
+/* ----------Text---------- */
+.text-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 5px;
+  margin-left: 10px;
+  width: 50%;
+}
+
+.text-div h1{
+    font-size: 0.9rem;
+    font-weight: 200;
+    color: white;
 }
