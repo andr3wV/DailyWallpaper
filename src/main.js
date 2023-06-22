@@ -60,7 +60,7 @@ ipcMain.on("changeTiles", async (event) => {
 });
 
 //Schedule cron job to update wallpaper every minute
-const updateWallpaperJob = schedule.scheduleJob('* * * * *', () => {
+const updateWallpaperJob = schedule.scheduleJob('0 */2 * * *', () => {
   console.log('Updating wallpaper...');
   updateWallpaper();
   getImageData(null)
