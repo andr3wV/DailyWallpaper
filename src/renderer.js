@@ -1,9 +1,9 @@
 const updateVariables = (data) => {
-  document.querySelector("#name").innerText = `Name: ${data.name}`;
-  document.querySelector("#username").innerText = `Username: ${data.username}`;
-  document.querySelector("#instagram").innerText = `Instagram: ${data.instagram}`;
-  document.querySelector("#description").innerText = `Description: ${data.description}`;
-  document.querySelector("#location").innerText = `Location: ${data.location}`;
+  data.name ? document.querySelector("#name").innerText = `Name: ${data.name}`: document.querySelector("#name").innerText = '';
+  data.username ? document.querySelector("#username").innerText = `Username: ${data.username}`: document.querySelector("#username").innerText = '';
+  data.instagram ? document.querySelector("#instagram").innerText = `Instagram: ${data.instagram}`: document.querySelector("#instagram").innerText = '';
+  data.description ? document.querySelector("#description").innerText = `Description: ${data.description}`: document.querySelector("#description").innerText = '';
+  data.location ? document.querySelector("#location").innerText = `Location: ${data.location}`: document.querySelector("#location").innerText = '';
 };
 
 document.addEventListener("DOMContentLoaded", () => {
