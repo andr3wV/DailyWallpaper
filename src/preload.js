@@ -1,7 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('myAPI',
-    {
+contextBridge.exposeInMainWorld('myAPI', {
         /* Open AI req and error */
         generateText: () => {
             ipcRenderer.send("generateText");
@@ -23,10 +22,17 @@ contextBridge.exposeInMainWorld('myAPI',
               callback(responseData);
             });
           },
-          unsplashApiRequestError: (callback) => {
-            ipcRenderer.on("unsplashApiRequestError", (_, errorMessage) => {
-              callback(errorMessage);
-            });
-          }
+        unsplashApiRequestError: (callback) => {
+          ipcRenderer.on("unsplashApiRequestError", (_, errorMessage) => {
+            callback(errorMessage);
+          });
+        },
+        onVariablesResponse: (callback) => {
+          ipcRenderer.on("variablesResponse", (event, data) => callback(data));
+        },
+        loadVariables: (callback) => {
+          ipcRenderer.send("requestVariables");
+          ipcRenderer.on("variablesResponse", (event, data) => callback(data));
+        },
     }
 );
