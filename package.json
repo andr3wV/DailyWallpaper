@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andr3wV/daily-wallpaper.git"
+    "url": "git+https://github.com/andr3wV/DailyWallpaper.git"
   },
   "author": "Andrew Vittiglio",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andr3wV/daily-wallpaper/issues"
+    "url": "https://github.com/andr3wV/DailyWallpaper/issues"
   },
-  "homepage": "https://github.com/andr3wV/daily-wallpaper#readme",
+  "homepage": "https://github.com/andr3wV/DailyWallpaper#readme",
   "devDependencies": {
     "@electron-forge/cli": "^6.2.1",
     "@electron-forge/maker-deb": "^6.2.1",
