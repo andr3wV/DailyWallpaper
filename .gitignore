@@ -2,3 +2,5 @@
 node_modules/
 app/assets/image.png
 .DS_Store
+
+out/

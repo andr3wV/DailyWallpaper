@@ -1,11 +1,13 @@
 {
-  "name": "daily-wallpaper",
+  "name": "Daily Wallpaper",
   "version": "1.0.0",
   "description": "Generates a daily psuedo-random beautiful desktop wallpaper on MacOS.",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
   },
   "repository": {
     "type": "git",
@@ -18,11 +20,20 @@
   },
   "homepage": "https://github.com/andr3wV/daily-wallpaper#readme",
   "devDependencies": {
+    "@electron-forge/cli": "^6.2.1",
+    "@electron-forge/maker-deb": "^6.2.1",
+    "@electron-forge/maker-rpm": "^6.2.1",
+    "@electron-forge/maker-squirrel": "^6.2.1",
+    "@electron-forge/maker-zip": "^6.2.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
+    "@electron-forge/publisher-github": "^6.2.1",
     "electron": "^25.1.1"
   },
   "dependencies": {
     "axios": "^1.4.0",
+    "child_process": "^1.0.2",
     "dotenv": "^16.3.1",
+    "electron-squirrel-startup": "^1.0.0",
     "fs": "^0.0.1-security",
     "node-schedule": "^2.1.1",
     "openai": "^3.3.0",
