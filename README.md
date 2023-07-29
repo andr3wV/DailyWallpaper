@@ -14,21 +14,39 @@ Daily Wallpaper is a MacOS app that changes your wallpaper to a random atheistic
  **Note**: Install the latest version `node` and `npm` from [here](https://nodejs.org/en/download/).
 
  ## Install
- Click [here](https://github.com/andr3wV/DailyWallpaper/releases/download/v1.0.0/Daily.Wallpaper-darwin-arm64-1.0.0.zip) or go to the [releases](https://github.com/andr3wV/DailyWallpaper/releases/tag/v1.0.0) page and download the zip file. 
+ 
+  Clone the repo and open the directory: 
+  ```bash
+  $ git clone https://github.com/andr3wV/DailyWallpaper.git
+  $ cd daily-wallpaper
+  ```
+  Installs dependencies using `npm`:
 
- ## Running
- Daily Wallpaper won't run right after download. There's an error with the signing because I don't have a Apple Developer Program Account. Because of this you will have to open terminal and run this command: 
+  ```bash
+  $ npm install 
+  ```
+  **Note**: you may have to force permissions (e.g. `sudo` on MacOS)
 
-```bash
-$ xattr -cr <path_to_app>
-``` 
-<path_to_app> is the location the app downloaded to. It typically downloads to your Downloads folder so run this:
+## Running
+  This application uses GPT-3.5-turbo to randomize and the unSplash API to download images. Because of this, you will need both an OpenAI API key (paid) and an unSplash API key (free).  
 
-```bash
-xattr -cr ~/Downloads/Daily\ Wallpaper.app
+ Once you have both API keys, update every instance of process.env.YOUR-OPENAI-KEY-HERE and process.env.YOUR-UNSPLASH-API-KEY-HERE in main.js with your actual keys:
+
+  **Note**:  Future updates will not need this step, but for now this is necessary. Sorry!
+
+  Using `npm`,  make the application:
+
+  ```bash
+  $ npm run make
+  ```
+
+Open Finder and navigate to the project: 
+
+```
+ DailyWallpaper -> out -> Daily Wallpaper-XXX
 ```
 
-Then you should be able to run the app!
+Now drag the app icon into your dock or Applications folder and it will work!
 
 ## Future Work
 
