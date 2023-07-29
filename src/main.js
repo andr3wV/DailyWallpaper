@@ -23,7 +23,7 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js")
     },
     resizable: false,
-    icon: path.join(__dirname, "../app/assets/icon.png"),
+    icon: path.join(__dirname, "../app/assets/icons/icon.icns"),
   });
 
   mainWindow.loadFile(path.join(__dirname, "../app/index.html"));
