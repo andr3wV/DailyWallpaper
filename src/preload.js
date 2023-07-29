@@ -2,8 +2,8 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('myAPI', {
       /* Open AI req and error */
-      generateText: () => {
-          ipcRenderer.send("generateText");
+      generateText: (tileNumber) => {
+          ipcRenderer.send("generateText", tileNumber);
       },
 
       /* Unsplash req and error */

@@ -20,8 +20,9 @@ const createWindow = () => {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, "preload.js")
     },
+    resizable: false,
     icon: path.join(__dirname, "../app/assets/icon.png"),
   });
 
@@ -47,8 +48,8 @@ const dockMenu = Menu.buildFromTemplate([
 ]);
 
 /*---------SEND ACTIONS TO RENDERER----------*/
-ipcMain.on("generateText", async (event) => {
-  updateWallpaper(event);
+ipcMain.on("generateText", async (event, tileNumber) => {
+  updateWallpaper(event, tileNumber);
 });
 
 ipcMain.on("requestVariables", async (event) => {
@@ -88,73 +89,85 @@ app.on("activate", () => {
 /*----------------------------*/
 
 /*----------Updates Wallpaper-----------*/
-async function updateWallpaper(event = null) {
-  
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
+async function updateWallpaper(event = null, tileNumber = null) {
+  if(tileNumber){
+    /*---------Set Image as Wallpaper----------*/
+    (async () => {
+      const wallpaper = await import("wallpaper");
+      await wallpaper
+        .setWallpaper(path.join(__dirname, "../app/assets/gallery/image" + tileNumber + '.jpg'))
+        .then(() => {
+          console.log("Image set as wallpaper!!");
+        });
+    })();
+  }
+  else{  
+    const configuration = new Configuration({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration);
 
 
-  /*---------OPEN AI API REQUEST----------*/
-  const completion = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "user",
-        content:
-          "Create a one word search prompt for Unplash to find an aesthetic picture.",
-      },
-    ],
-    temperature: 2,
-    max_tokens: 50,
-    top_p: 1,
-  });
+    /*---------OPEN AI API REQUEST----------*/
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content:
+            "Create a one word search prompt for Unplash to find an aesthetic picture.",
+        },
+      ],
+      temperature: 2,
+      max_tokens: 50,
+      top_p: 1,
+    });
 
-  const completion_text = completion.data.choices[0].message.content;
-  console.log(completion_text);
-  
-  /*---------Get Image from Unsplash API----------*/
-  const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=" + completion_text + "&client_id=" + process.env.UNSPLASH_API_KEY );
-  //console.log(response.data[0]);
+    const completion_text = completion.data.choices[0].message.content;
+    console.log(completion_text);
+    
+    /*---------Get Image from Unsplash API----------*/
+    const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=" + completion_text + "&client_id=" + process.env.UNSPLASH_API_KEY );
+    //console.log(response.data[0]);
 
-  /*---------Download Image Response URL----------*/
-  const name = response.data.user.name;
-  const username = `@${response.data.user.username}`;
-  const instagram = `@${response.data.user.instagram_username}`;
-  const description = response.data.description;
-  const location = response.data.location.name;
-  const imageURL = response.data.links.download;
+    /*---------Download Image Response URL----------*/
+    const name = response.data.user.name;
+    const username = `@${response.data.user.username}`;
+    const instagram = `@${response.data.user.instagram_username}`;
+    const description = response.data.description;
+    const location = response.data.location.name;
+    const imageURL = response.data.links.download;
 
-  const responseImage = await axios.get(imageURL, { responseType: "stream" });
-  const file = fs.createWriteStream(
-    path.join(__dirname, "../app/assets/image.jpg")
-  );
-  responseImage.data.pipe(file);
-  file.on('error', (err) => {
-      fs.unlink(path.join(__dirname, '../app/assets/image.jpg'), () => {
-          console.error('Error downloading image:', err);
-      });
-  })
-  .on('finish', () => {
-      const variables = { name, username, instagram, description, location };
-      fs.writeFileSync(path.join(__dirname, '../app/data.json'), JSON.stringify(variables));
-      if (event) {
-        event.reply("variablesResponse", variables);
-      } else if (mainWindow) {
-        mainWindow.webContents.send("variablesResponse", variables);
-      }
-  });
+    const responseImage = await axios.get(imageURL, { responseType: "stream" });
+    const file = fs.createWriteStream(
+      path.join(__dirname, "../app/assets/image.jpg")
+    );
+    responseImage.data.pipe(file);
+    file.on('error', (err) => {
+        fs.unlink(path.join(__dirname, '../app/assets/image.jpg'), () => {
+            console.error('Error downloading image:', err);
+        });
+    })
+    .on('finish', () => {
+        const variables = { name, username, instagram, description, location };
+        fs.writeFileSync(path.join(__dirname, '../app/data.json'), JSON.stringify(variables));
+        if (event) {
+          event.reply("variablesResponse", variables);
+        } else if (mainWindow) {
+          mainWindow.webContents.send("variablesResponse", variables);
+        }
+    });
 
-  /*---------Set Image as Wallpaper----------*/
-  (async () => {
-    const wallpaper = await import("wallpaper");
-    await wallpaper
-      .setWallpaper(path.join(__dirname, "../app/assets/image.jpg"))
-      .then(() => {
-        console.log("Image set as wallpaper!!");
-      });
-  })();
+    /*---------Set Image as Wallpaper----------*/
+    (async () => {
+      const wallpaper = await import("wallpaper");
+      await wallpaper
+        .setWallpaper(path.join(__dirname, "../app/assets/image.jpg"))
+        .then(() => {
+          console.log("Image set as wallpaper!!");
+        });
+    })();
+  }
 }
 
 async function updateTiles(event = null) {

@@ -7,7 +7,70 @@ const updateVariables = (data) => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Change the wallpaper
+  // Tile logic
+  var img1 = document.getElementById("img1");
+  var img2 = document.getElementById("img2");
+  var img3 = document.getElementById("img3");
+  var img4 = document.getElementById("img4");
+  var img5 = document.getElementById("img5");
+  var img6 = document.getElementById("img6");
+  var img7 = document.getElementById("img7");
+  var img8 = document.getElementById("img8");
+  var img9 = document.getElementById("img9");
+  var img10 = document.getElementById("img10");
+
+  img1.addEventListener('click', function() {
+    console.log('Tile 1 clicked');
+    window.myAPI.generateText(tileNumber = 1);
+  });
+  
+  img2.addEventListener('click', function() {
+    console.log('Tile 2 clicked');
+    window.myAPI.generateText(tileNumber = 2);
+  });
+  
+  img3.addEventListener('click', function() {
+    console.log('Tile 3 clicked');
+    window.myAPI.generateText(tileNumber = 3);
+  });
+  
+  img4.addEventListener('click', function() {
+    console.log('Tile 4 clicked');
+    window.myAPI.generateText(tileNumber = 4);
+  });
+  
+  img5.addEventListener('click', function() {
+    console.log('Tile 5 clicked');
+    window.myAPI.generateText(tileNumber = 5);
+  });
+  
+  img6.addEventListener('click', function() {
+    console.log('Tile 6 clicked');
+    window.myAPI.generateText(tileNumber = 6);
+  });
+  
+  img7.addEventListener('click', function() {
+    console.log('Tile 7 clicked');
+    window.myAPI.generateText(tileNumber = 7);
+  });
+  
+  img8.addEventListener('click', function() {
+    console.log('Tile 8 clicked');
+    window.myAPI.generateText(tileNumber = 8);
+  });
+  
+  img9.addEventListener('click', function() {
+    console.log('Tile 9 clicked');
+    window.myAPI.generateText(tileNumber = 9);
+  });
+  
+  img10.addEventListener('click', function() {
+    console.log('Tile 10 clicked');
+    window.myAPI.generateText(tileNumber = 10);
+  });
+  
+  // Button logic
+
   const button = document.querySelector("#chatButton");
 
   button.addEventListener("click", () => {
