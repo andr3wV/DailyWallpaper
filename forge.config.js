@@ -1,9 +1,13 @@
-require("dotenv").config();
-
 module.exports = {
   packagerConfig: {
-    asar: true,
-    icon: 'app/assets/icons/icon' 
+    "asar": {
+      unpack: [
+        "**/node_modules/wallpaper/**",
+        "**/app/assets/gallery/**",
+        "**/app/assets/image.jpg"
+      ]
+    },
+    icon: 'app/assets/icons/icon'
 
     // NEED TO BE IN THE APPLE DEV PROGRAM TO GET A TEAM_ID
     

@@ -1,3 +1,6 @@
+OPENAI_API_KEY = 'sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+UNSPLASH_API_KEY = 'XXXXXXXXXX'
+
 require("dotenv").config();
 const { app, BrowserWindow, Menu, ipcMain } = require("electron");
 const path = require("path");
@@ -7,12 +10,11 @@ const fs = require("fs");
 const schedule = require('node-schedule');
 let mainWindow;
 
-
 /*----------------------------*/
 /*------------WINDOW----------*/
 /*----------------------------*/
 
-/*----------Creat Window-----------*/
+/*----------Create Window-----------*/
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -28,24 +30,6 @@ const createWindow = () => {
 
   mainWindow.loadFile(path.join(__dirname, "../app/index.html"));
 };
-
-/* ---------Create DOCK MENU----------*/
-const dockMenu = Menu.buildFromTemplate([
-  {
-    label: "New Window",
-    click() {
-      console.log("New Window");
-    },
-  },
-  {
-    label: "New Window with Settings",
-    submenu: [
-      { label: "Basic" },
-      { label: "Pro" }
-    ]
-  },
-  { label: "New Command..." }
-]);
 
 /*---------SEND ACTIONS TO RENDERER----------*/
 ipcMain.on("generateText", async (event, tileNumber) => {
@@ -69,20 +53,11 @@ const updateWallpaperJob = schedule.scheduleJob('0 */2 * * *', () => {
 
 /*---------LAUNCH WINDOW----------*/  
 app
-  .whenReady()
-  .then(() => {
-    if (process.platform === "darwin") {
-      app.dock.setMenu(dockMenu);
-    }
-  })
-  .then(createWindow);
+  .whenReady().then(createWindow);
 
 app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
-
 
 /*----------------------------*/
 /*---------FUNCTIONS----------*/
@@ -93,9 +68,12 @@ async function updateWallpaper(event = null, tileNumber = null) {
   if(tileNumber){
     /*---------Set Image as Wallpaper----------*/
     (async () => {
-      const wallpaper = await import("wallpaper");
+      const wallpaperPath = path.join(__dirname, "../node_modules/wallpaper/index.js").replace('app.asar', 'app.asar.unpacked');
+      const wallpaper = await import(wallpaperPath);
+      const parentDir = path.dirname(__dirname); // This will give you 'the parent not in src'
+      const imagePath = path.join(parentDir, "/app/assets/gallery/image" + tileNumber + ".jpg").replace('app.asar', 'app.asar.unpacked');
       await wallpaper
-        .setWallpaper(path.join(__dirname, "../app/assets/gallery/image" + tileNumber + '.jpg'))
+        .setWallpaper(imagePath)
         .then(() => {
           console.log("Image set as wallpaper!!");
         });
@@ -103,7 +81,7 @@ async function updateWallpaper(event = null, tileNumber = null) {
   }
   else{  
     const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: OPENAI_API_KEY
     });
     const openai = new OpenAIApi(configuration);
 
@@ -115,7 +93,7 @@ async function updateWallpaper(event = null, tileNumber = null) {
         {
           role: "user",
           content:
-            "Create a one word search prompt for Unplash to find an aesthetic picture.",
+            "Create a one word search prompt for Unplash to find an aesthetic picture. The prompt should gaurantee that a beautiful picture is found in unsplash.",
         },
       ],
       temperature: 2,
@@ -127,8 +105,7 @@ async function updateWallpaper(event = null, tileNumber = null) {
     console.log(completion_text);
     
     /*---------Get Image from Unsplash API----------*/
-    const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=" + completion_text + "&client_id=" + process.env.UNSPLASH_API_KEY );
-    //console.log(response.data[0]);
+    const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=" + completion_text + "&client_id=" + UNSPLASH_API_KEY );
 
     /*---------Download Image Response URL----------*/
     const name = response.data.user.name;
@@ -157,12 +134,15 @@ async function updateWallpaper(event = null, tileNumber = null) {
           mainWindow.webContents.send("variablesResponse", variables);
         }
     });
-
+    
     /*---------Set Image as Wallpaper----------*/
     (async () => {
-      const wallpaper = await import("wallpaper");
+      const wallpaperPath = path.join(__dirname, "../node_modules/wallpaper/index.js").replace('app.asar', 'app.asar.unpacked');
+      const wallpaper = await import(wallpaperPath);
+      const parentDir = path.dirname(__dirname); // This will give you 'the parent not in src'
+      const imagePath = path.join(parentDir, "/app/assets/image.jpg").replace('app.asar', 'app.asar.unpacked');
       await wallpaper
-        .setWallpaper(path.join(__dirname, "../app/assets/image.jpg"))
+        .setWallpaper(imagePath)
         .then(() => {
           console.log("Image set as wallpaper!!");
         });
@@ -172,7 +152,7 @@ async function updateWallpaper(event = null, tileNumber = null) {
 
 async function updateTiles(event = null) {
   try {
-    const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=beautiful&client_id=" + process.env.UNSPLASH_API_KEY +"&count=10");
+    const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=beautiful&client_id=" + UNSPLASH_API_KEY + "&count=10");
     
     const downloadPromises = response.data.map(async (item, i) => {
       const imageURL = item.links.download;
