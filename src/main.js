@@ -1,5 +1,5 @@
-OPENAI_API_KEY = 'sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-UNSPLASH_API_KEY = 'XXXXXXXXXX'
+OPENAI_API_KEY = 'sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+UNSPLASH_API_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
 require("dotenv").config();
 const { app, BrowserWindow, Menu, ipcMain } = require("electron");
@@ -57,7 +57,16 @@ app
 
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  if (mainWindow === null) createWindow();
 });
+
+app.on('window-all-closed', () => {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
 
 /*----------------------------*/
 /*---------FUNCTIONS----------*/
@@ -80,32 +89,31 @@ async function updateWallpaper(event = null, tileNumber = null) {
     })();
   }
   else{  
-    const configuration = new Configuration({
-      apiKey: OPENAI_API_KEY
-    });
-    const openai = new OpenAIApi(configuration);
+    // const configuration = new Configuration({
+    //   apiKey: OPENAI_API_KEY
+    // });
+    // const openai = new OpenAIApi(configuration);
 
 
-    /*---------OPEN AI API REQUEST----------*/
-    const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "user",
-          content:
-            "Create a one word search prompt for Unplash to find an aesthetic picture. The prompt should gaurantee that a beautiful picture is found in unsplash.",
-        },
-      ],
-      temperature: 2,
-      max_tokens: 50,
-      top_p: 1,
-    });
+    // /*---------OPEN AI API REQUEST----------*/
+    // const completion = await openai.createChatCompletion({
+    //   model: "gpt-3.5-turbo",
+    //   messages: [
+    //     {
+    //       role: "user",
+    //       content:
+    //         "Create a one word search prompt for Unplash to find an aesthetic picture. The prompt should gaurantee that a beautiful picture is found in unsplash.",
+    //     },
+    //   ],
+    //   temperature: 2,
+    //   max_tokens: 50,
+    //   top_p: 1,
+    // });
 
-    const completion_text = completion.data.choices[0].message.content;
-    console.log(completion_text);
-    
+    // const completion_text = completion.data.choices[0].message.content;
+    // console.log(completion_text);
     /*---------Get Image from Unsplash API----------*/
-    const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=" + completion_text + "&client_id=" + UNSPLASH_API_KEY );
+    const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=beautiful&client_id=" + UNSPLASH_API_KEY );
 
     /*---------Download Image Response URL----------*/
     const name = response.data.user.name;
@@ -125,7 +133,7 @@ async function updateWallpaper(event = null, tileNumber = null) {
             console.error('Error downloading image:', err);
         });
     })
-    .on('finish', () => {
+    .on('finish', async () => {
         const variables = { name, username, instagram, description, location };
         fs.writeFileSync(path.join(__dirname, '../app/data.json'), JSON.stringify(variables));
         if (event) {
@@ -133,27 +141,24 @@ async function updateWallpaper(event = null, tileNumber = null) {
         } else if (mainWindow) {
           mainWindow.webContents.send("variablesResponse", variables);
         }
+        
+        /*---------Set Image as Wallpaper----------*/
+        const wallpaperPath = path.join(__dirname, "../node_modules/wallpaper/index.js").replace('app.asar', 'app.asar.unpacked');
+        const wallpaper = await import(wallpaperPath);
+        const parentDir = path.dirname(__dirname); // This will give you 'the parent not in src'
+        const imagePath = path.join(parentDir, "/app/assets/image.jpg").replace('app.asar', 'app.asar.unpacked');
+        await wallpaper
+          .setWallpaper(imagePath)
+          .then(() => {
+            console.log("Image set as wallpaper!!");
+          });
     });
-    
-    /*---------Set Image as Wallpaper----------*/
-    (async () => {
-      const wallpaperPath = path.join(__dirname, "../node_modules/wallpaper/index.js").replace('app.asar', 'app.asar.unpacked');
-      const wallpaper = await import(wallpaperPath);
-      const parentDir = path.dirname(__dirname); // This will give you 'the parent not in src'
-      const imagePath = path.join(parentDir, "/app/assets/image.jpg").replace('app.asar', 'app.asar.unpacked');
-      await wallpaper
-        .setWallpaper(imagePath)
-        .then(() => {
-          console.log("Image set as wallpaper!!");
-        });
-    })();
   }
 }
 
 async function updateTiles(event = null) {
   try {
     const response = await axios.get("https://api.unsplash.com/photos/random?orientation=landscape&query=beautiful&client_id=" + UNSPLASH_API_KEY + "&count=10");
-    
     const downloadPromises = response.data.map(async (item, i) => {
       const imageURL = item.links.download;
       const responseImage = await axios.get(imageURL, { responseType: "stream" });
