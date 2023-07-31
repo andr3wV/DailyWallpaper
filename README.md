@@ -5,7 +5,7 @@ Daily Wallpaper is a MacOS app that changes your wallpaper to a random atheistic
 
 >HTML/CSS/JS packaged with Electron
 
-![Homepage](https://imgur.com/5jlYeoH.jpg)
+<img width="801" alt="Screenshot 2023-07-30 at 11 22 16 PM" src="https://github.com/andr3wV/DailyWallpaper/assets/77115975/d50dbb98-4924-4dce-b2fa-45a6172210cd">
  ## Requirements
 
   - `node` 5.0.0 or greater
