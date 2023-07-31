@@ -14,8 +14,9 @@ html {
     font-size: 1rem;
     line-height: 1.25;
     background-color: gray; /* fallback color in case gradients are not supported */
-    background: linear-gradient(to bottom right, #353742, black);
+    background: linear-gradient(to bottom right, #000000, #2C2C2C);
     overflow: hidden;
+    position: relative;
   }
   
   .grid {
@@ -182,45 +183,6 @@ html {
     margin-top: 30px;
 
 }
-.button-16 {
-  align-items: center;
-  appearance: none;
-  background-color: #fff;
-  border-radius: 24px;
-  border-style: none;
-  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
-  box-sizing: border-box;
-  color: #3c4043;
-  cursor: pointer;
-  display: inline-flex;
-  fill: currentcolor;
-  font-family: "Google Sans",Roboto,Arial,sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  height: 48px;
-  justify-content: center;
-  letter-spacing: .25px;
-  line-height: normal;
-  max-width: 100%;
-  overflow: visible;
-  padding: 2px 24px;
-  position: relative;
-  text-align: center;
-  text-transform: none;
-  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: auto;
-  will-change: transform,opacity;
-  z-index: 0;
-  margin-left: 30px;
-}
-
-.button-17:hover {
-  background: #F6F9FE;
-  color: #174ea6;
-}
 
 /* ----------Text---------- */
 .text-div {
@@ -230,11 +192,152 @@ html {
   align-items: flex-start;
   margin-top: 5px;
   margin-left: 10px;
-  width: 50%;
+  width: 60%;
+  border-left: 2px solid darkgrey;
+  border-radius: 25%;
+  padding: 20px;
 }
 
 .text-div h1{
     font-size: 0.9rem;
     font-weight: 200;
     color: white;
+    margin-right: 1rem;
+}
+
+#location, #name{
+  margin-right: 6rem;
+}
+
+glow-button{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 20px 30px;
+  color: var(--black);
+  font-weight: bold;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 0.5s;
+  cursor: pointer;
+  margin-left: 2.5rem;
+}
+
+glow-button:before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  left: -2px;
+  border-radius: inherit;
+  z-index: -1;
+  background-clip: padding-box;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+glow-button:hover{
+    color: #050801;
+    box-shadow: 0 0 5px hsl(158, 82%, 57%, 85%),
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 200px hsl(252, 82%, 57%);
+}
+
+.circle {
+  background: transparent;
+  width: 350px; 
+  height: 200px;
+  margin-left: 1rem;
+  border-radius: 20%; 
+  overflow: hidden;
+  animation: morph 6s ease-in-out infinite;
+  position: relative;
+}
+
+.circle img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@keyframes morph {
+  0%, 100% {
+    border-radius: 20% 80% 80% 20% / 50%;
+  }
+  25% {
+    border-radius: 80% 20% 20% 80% / 50%;
+  }
+  50% {
+    border-radius: 60% 40% 40% 60% / 50%;
+  }
+  75% {
+    border-radius: 40% 60% 60% 40% / 50%;
+  }
+}
+ 
+#loader {
+  display: inline-block;
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  top: 0;
+  right: 0;
+  margin-right: -375px;
+  margin-top: -375px;
+  rotate: 90deg;
+}
+ 
+ rect {
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+ }
+ 
+ .blobs {
+  -webkit-filter: url("#goo");
+  filter: url("#goo");
+ }
+ 
+ .blob {
+   fill: white;
+ }
+ 
+ /*---------STARS----------*/
+ .comet-bg {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.comet {
+  position: absolute;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 100%);
+  width: 2px;
+  height: 100px;
+  animation: shoot 5s linear infinite;
+  opacity: 0;
+}
+
+@keyframes shoot {
+  0% {
+      transform: translateY(100%);
+      opacity: 0;
+  }
+  5% {
+      opacity: 1;
+  }
+  95% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+  }
 }

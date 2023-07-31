@@ -1,6 +1,5 @@
 const updateVariables = (data) => {
   data.name ? document.querySelector("#name").innerText = `Name: ${data.name}`: document.querySelector("#name").innerText = '';
-  data.username ? document.querySelector("#username").innerText = `Username: ${data.username}`: document.querySelector("#username").innerText = '';
   data.instagram ? document.querySelector("#instagram").innerText = `Instagram: ${data.instagram}`: document.querySelector("#instagram").innerText = '';
   data.description ? document.querySelector("#description").innerText = `Description: ${data.description}`: document.querySelector("#description").innerText = '';
   data.location ? document.querySelector("#location").innerText = `Location: ${data.location}`: document.querySelector("#location").innerText = '';
@@ -76,6 +75,12 @@ document.addEventListener("DOMContentLoaded", () => {
   button.addEventListener("click", () => {
     console.log("button clicked");
     window.myAPI.generateText(); // Use myAPI object to send request
+    button.style.pointerEvents = "none";  // disable the button after it's clicked
+    
+    // enable the button again after 5 seconds (5000 milliseconds)
+    setTimeout(() => {
+        button.style.pointerEvents = "auto";
+    }, 5000);
   });
 
   window.myAPI.unsplashApiRequestSuccess((responseData) => {
@@ -102,6 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
   button2.addEventListener("click", () => {
     console.log("button2 clicked");
     window.myAPI.changeTiles(); // Use myAPI object to send request
+    button2.style.pointerEvents = "none";  // disable the button after it's clicked
+    
+    // enable the button again after 5 seconds (5000 milliseconds)
+    setTimeout(() => {
+        button2.style.pointerEvents = "auto";
+    }, 15000);
   });
 
   window.myAPI.onTilesChanged((completionText) => {

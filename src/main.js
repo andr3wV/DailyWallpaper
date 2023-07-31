@@ -1,5 +1,5 @@
-OPENAI_API_KEY = 'sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-UNSPLASH_API_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+OPENAI_API_KEY = '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'
+UNSPLASH_API_KEY = '6OkTfDSiL7-rF59stfvyF5EtTqi6hbzguxEEAlsQpRQ'
 
 require("dotenv").config();
 const { app, BrowserWindow, Menu, ipcMain } = require("electron");
@@ -117,7 +117,6 @@ async function updateWallpaper(event = null, tileNumber = null) {
 
     /*---------Download Image Response URL----------*/
     const name = response.data.user.name;
-    const username = `@${response.data.user.username}`;
     const instagram = `@${response.data.user.instagram_username}`;
     const description = response.data.description;
     const location = response.data.location.name;
@@ -134,7 +133,7 @@ async function updateWallpaper(event = null, tileNumber = null) {
         });
     })
     .on('finish', async () => {
-        const variables = { name, username, instagram, description, location };
+        const variables = { name, instagram, description, location };
         fs.writeFileSync(path.join(__dirname, '../app/data.json'), JSON.stringify(variables));
         if (event) {
           event.reply("variablesResponse", variables);
@@ -207,7 +206,6 @@ async function getImageData(event){
       if (event){
         event.reply("variablesResponse", {
           name: "",
-          username: "",
           instagram: "",
           description: "",
           location: "",
@@ -215,7 +213,6 @@ async function getImageData(event){
       } else if (mainWindow) {
         mainWindow.webContents.send("variablesResponse", {
           name: "",
-          username: "",
           instagram: "",
           description: "",
           location: "",
