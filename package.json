@@ -1,5 +1,5 @@
 {
-  "name": "daily",
+  "name": "Daily Wallpaper",
   "version": "1.0.0",
   "description": "Generates a daily psuedo-random beautiful desktop wallpaper on MacOS.",
   "main": "src/main.js",
